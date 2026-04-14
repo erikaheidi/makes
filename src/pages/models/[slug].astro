@@ -1,6 +1,9 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import PrintAdvice from "../../components/PrintAdvice.astro";
+import PaintingAdviceList from "../../components/PaintingAdviceList.astro";
+import ModelGallery from "../../components/ModelGallery.astro";
 
 export async function getStaticPaths() {
   const models = await getCollection("models");
@@ -17,12 +20,6 @@ const { Content } = await render(model);
 <BaseLayout title={model.data.title}>
   <article class="model-detail">
     <a href="/" class="back-link">← Back to Catalog</a>
-
-    {model.data.image && (
-      <div class="model-image">
-        <img src={model.data.image} alt={model.data.title} />
-      </div>
-    )}
 
     <h1>{model.data.title}</h1>
 
@@ -51,6 +48,21 @@ const { Content } = await render(model);
           </span>
         </div>
       )}
+      {(model.data.printAdvice ||
+        (model.data.paintingAdvice && model.data.paintingAdvice.length > 0)) && (
+        <div class="meta-actions" aria-label="Advice shortcuts">
+          {model.data.printAdvice && (
+            <a class="advice-link-button" href="#print-advice">
+              Print Advice
+            </a>
+          )}
+          {model.data.paintingAdvice && model.data.paintingAdvice.length > 0 && (
+            <a class="advice-link-button" href="#painting-advice">
+              Paint Advice
+            </a>
+          )}
+        </div>
+      )}
     </div>
 
     {model.data.tags && model.data.tags.length > 0 && (
@@ -61,9 +73,34 @@ const { Content } = await render(model);
       </div>
     )}
 
+    <ModelGallery gallery={model.data.gallery} />
+
     <div class="model-content">
       <Content />
     </div>
+
+    {model.data.downloadUrl && (
+      <a
+        class="download-button"
+        href={model.data.downloadUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Download this Model
+      </a>
+    )}
+
+    <PrintAdvice printAdvice={model.data.printAdvice} />
+
+    <PaintingAdviceList adviceSlugs={model.data.paintingAdvice} />
+
+    <section class="usage-note" aria-label="Usage and license information">
+      <p>
+        Copyright Heidi Makes. Files are for personal use only, not for commercial use, and may
+        not be redistributed. Commercial licenses are available for members of the <a href="https://www.printables.com/@erikaheidi#join.@erikaheidi.1686" title="Join Heidi Makes Club on Printables!">Heidi Makes Club</a> on
+        the Printables platform.
+      </p>
+    </section>
   </article>
 </BaseLayout>
 
@@ -83,19 +120,6 @@ const { Content } = await render(model);
 
   .back-link:hover {
     text-decoration: underline;
-  }
-
-  .model-image {
-    margin-bottom: 2rem;
-    border-radius: var(--radius);
-    overflow: hidden;
-    border: 1px solid var(--border);
-  }
-
-  .model-image img {
-    width: 100%;
-    display: block;
-    border-radius: 0;
   }
 
   h1 {
@@ -133,6 +157,42 @@ const { Content } = await render(model);
   .meta-value {
     font-size: 0.95rem;
     color: var(--text);
+  }
+
+  .meta-actions {
+    margin-left: auto;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .advice-link-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.45rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--border) 60%);
+    background: color-mix(in srgb, var(--accent-light) 45%, var(--bg) 55%);
+    color: var(--accent-text);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    transition: transform 0.15s ease, filter 0.15s ease, border-color 0.15s ease;
+  }
+
+  .advice-link-button:hover {
+    text-decoration: none;
+    transform: translateY(-1px);
+    filter: saturate(1.08);
+    border-color: color-mix(in srgb, var(--accent) 58%, var(--border) 42%);
+  }
+
+  .advice-link-button:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--accent) 60%, transparent);
+    outline-offset: 2px;
   }
 
   .model-tags {
@@ -196,7 +256,72 @@ const { Content } = await render(model);
     font-size: 0.9em;
   }
 
+  .download-button {
+    display: block;
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 0.95rem 1.1rem;
+    border-radius: 12px;
+    border: 1px solid color-mix(in srgb, var(--accent) 75%, black 25%);
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent) 90%, white 10%) 0%,
+      color-mix(in srgb, var(--accent) 68%, black 32%) 100%
+    );
+    color: var(--bg);
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    text-shadow: 0 1px 0 color-mix(in srgb, black 35%, transparent);
+    box-shadow:
+      0 10px 24px color-mix(in srgb, var(--accent) 32%, transparent),
+      inset 0 1px 0 color-mix(in srgb, white 35%, transparent);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease,
+      border-color 0.18s ease;
+  }
+
+  .download-button:hover {
+    text-decoration: none;
+    transform: translateY(-2px);
+    filter: saturate(1.18) brightness(1.04);
+    border-color: color-mix(in srgb, var(--accent) 60%, white 40%);
+    box-shadow:
+      0 14px 28px color-mix(in srgb, var(--accent) 42%, transparent),
+      inset 0 1px 0 color-mix(in srgb, white 45%, transparent);
+  }
+
+  .download-button:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--accent) 40%, white 60%);
+    outline-offset: 2px;
+  }
+
+  .usage-note {
+    margin-top: 1.5rem;
+    padding: 0.85rem 0.95rem;
+    border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--border) 78%);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--bg-secondary) 86%, var(--accent-light) 14%);
+  }
+
+  .usage-note p {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
   @media (max-width: 640px) {
+    .model-meta {
+      gap: 1rem;
+    }
+
+    .meta-actions {
+      width: 100%;
+      margin-left: 0;
+    }
+
     h1 {
       font-size: 1.5rem;
     }

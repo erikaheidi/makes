@@ -1,4 +1,4 @@
-# ✦ Makes
+# ✦ Heidi Makes
 
 A 3D model catalog built with [Astro](https://astro.build) and hosted on [Netlify](https://www.netlify.com).
 

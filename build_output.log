@@ -1,0 +1,28 @@
+
+> makes@1.0.0 build
+> astro build
+
+13:51:16 [content] Syncing content
+13:51:16 [content] Synced content
+13:51:16 [types] Generated 212ms
+13:51:16 [build] output: "static"
+13:51:16 [build] mode: "static"
+13:51:16 [build] directory: /home/erika/Projects/makes/dist/
+13:51:16 [build] Collecting build info...
+13:51:16 [build] ✓ Completed in 222ms.
+13:51:16 [build] Building static entrypoints...
+13:51:17 [vite] ✓ built in 480ms
+13:51:17 [build] ✓ Completed in 501ms.
+
+ generating static routes 
+13:51:17 ▶ src/pages/models/[slug].astro
+13:51:17   ├─ /models/articulated-dragon/index.html (+6ms) 
+13:51:17   ├─ /models/geometric-planter/index.html (+1ms) 
+13:51:17   ├─ /models/miniature-castle-tower/index.html (+1ms) 
+13:51:17   └─ /models/stitch/index.html (+1ms) 
+13:51:17 ▶ src/pages/index.astro
+13:51:17   └─ /index.html (+1ms) 
+13:51:17 ✓ Completed in 22ms.
+
+13:51:17 [build] 5 page(s) built in 750ms
+13:51:17 [build] Complete!

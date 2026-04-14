@@ -1,0 +1,125 @@
+---
+import { getCollection, render } from "astro:content";
+
+interface Props {
+  adviceSlugs?: string[];
+}
+
+const { adviceSlugs = [] } = Astro.props;
+
+const allAdvice = await getCollection("paintingAdvice");
+const adviceBySlug = new Map(allAdvice.map((entry) => [entry.id, entry]));
+const selectedAdvice = adviceSlugs
+  .map((slug) => adviceBySlug.get(slug))
+  .filter((entry): entry is (typeof allAdvice)[number] => Boolean(entry));
+
+const renderedAdvice = await Promise.all(
+  selectedAdvice.map(async (entry) => {
+    const { Content } = await render(entry);
+    return { entry, Content };
+  }),
+);
+---
+
+{renderedAdvice.length > 0 && (
+  <section id="painting-advice" class="painting-advice" aria-label="Painting advice">
+    <div class="painting-header">
+      <p class="eyebrow">Painting Advice</p>
+      <h2>Finishing Steps</h2>
+      <p class="subtitle">Reusable painting guides selected for this model.</p>
+    </div>
+
+    <div class="advice-list">
+      {renderedAdvice.map(({ entry, Content }) => (
+        <article class="advice-card">
+          <h3>{entry.data.title}</h3>
+          {entry.data.description && <p class="lead">{entry.data.description}</p>}
+          <div class="advice-content">
+            <Content />
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+)}
+
+<style>
+  .painting-advice {
+    margin: 1.5rem 0 0;
+    border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--border) 72%);
+    border-radius: var(--radius);
+    padding: 1rem;
+    background:
+      radial-gradient(circle at top left, color-mix(in srgb, var(--accent-light) 65%, transparent) 0%, transparent 60%),
+      color-mix(in srgb, var(--bg-secondary) 82%, var(--bg) 18%);
+  }
+
+  .painting-header {
+    margin-bottom: 0.9rem;
+  }
+
+  .eyebrow {
+    margin: 0;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    color: var(--accent-text);
+  }
+
+  .painting-header h2 {
+    margin: 0.2rem 0 0;
+    font-size: 1.2rem;
+    color: var(--text);
+  }
+
+  .subtitle {
+    margin: 0.35rem 0 0;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+  }
+
+  .advice-list {
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .advice-card {
+    border: 1px solid color-mix(in srgb, var(--accent) 20%, var(--border) 80%);
+    border-radius: 10px;
+    padding: 0.9rem;
+    background: color-mix(in srgb, var(--bg) 84%, var(--accent-light) 16%);
+  }
+
+  .advice-card h3 {
+    margin: 0;
+    font-size: 1.02rem;
+    color: var(--text);
+  }
+
+  .lead {
+    margin: 0.3rem 0 0.7rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  .advice-content {
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+
+  .advice-content :global(p) {
+    margin-bottom: 0.6rem;
+  }
+
+  .advice-content :global(ul),
+  .advice-content :global(ol) {
+    margin: 0.35rem 0 0.6rem;
+    padding-left: 1.35rem;
+  }
+
+  .advice-content :global(li) {
+    margin-bottom: 0.25rem;
+  }
+</style>
