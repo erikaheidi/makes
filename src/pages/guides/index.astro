@@ -1,0 +1,100 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Guides">
+  <section class="hero">
+    <h1>Guides</h1>
+    <p>Printing and painting references for better results</p>
+  </section>
+
+  <section class="guide-categories">
+    <a href="/guides/painting/" class="category-card">
+      <span class="category-icon">🎨</span>
+      <h2>Painting Guides</h2>
+      <p>Techniques for priming, painting, and finishing your prints.</p>
+    </a>
+
+    <a href="/guides/printing/" class="category-card">
+      <span class="category-icon">🖨️</span>
+      <h2>Printing Guides</h2>
+      <p>Settings, tips, and workflows for reliable 3D prints.</p>
+    </a>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    text-align: center;
+    padding: 2rem 0 3rem;
+  }
+
+  .hero h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--purple-500), var(--purple-700));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+  }
+
+  .guide-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .category-card {
+    display: block;
+    padding: 2rem 1.5rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--card-shadow);
+    text-decoration: none;
+    color: var(--text);
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .category-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--card-shadow-hover);
+    text-decoration: none;
+  }
+
+  .category-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  .category-card h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .category-card p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  @media (max-width: 640px) {
+    .guide-categories {
+      grid-template-columns: 1fr;
+    }
+
+    .hero h1 {
+      font-size: 1.75rem;
+    }
+  }
+</style>

@@ -46,4 +46,12 @@ const paintingAdvice = defineCollection({
   }),
 });
 
-export const collections = { models, paintingAdvice };
+const printingGuides = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/printing-guides" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+  }),
+});
+
+export const collections = { models, paintingAdvice, printingGuides };

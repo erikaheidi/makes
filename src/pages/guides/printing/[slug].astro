@@ -1,0 +1,107 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const guides = await getCollection("printingGuides");
+  return guides.map((guide) => ({
+    params: { slug: guide.id },
+    props: { guide },
+  }));
+}
+
+const { guide } = Astro.props;
+const { Content } = await render(guide);
+---
+
+<BaseLayout title={guide.data.title}>
+  <article class="guide-detail">
+    <a href="/guides/printing/" class="back-link">← Printing Guides</a>
+
+    <h1>{guide.data.title}</h1>
+
+    {guide.data.description && (
+      <p class="guide-description">{guide.data.description}</p>
+    )}
+
+    <div class="guide-content">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .guide-detail {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: var(--accent);
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+
+  .back-link:hover {
+    text-decoration: underline;
+  }
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+
+  .guide-description {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .guide-content {
+    line-height: 1.75;
+    font-size: 1.05rem;
+    color: var(--text);
+  }
+
+  .guide-content :global(h2) {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 2rem 0 0.75rem;
+    color: var(--text);
+  }
+
+  .guide-content :global(h3) {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 1.5rem 0 0.5rem;
+    color: var(--text);
+  }
+
+  .guide-content :global(p) {
+    margin-bottom: 1rem;
+  }
+
+  .guide-content :global(ul),
+  .guide-content :global(ol) {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+  }
+
+  .guide-content :global(li) {
+    margin-bottom: 0.35rem;
+  }
+
+  .guide-content :global(a) {
+    color: var(--accent);
+  }
+
+  @media (max-width: 640px) {
+    h1 {
+      font-size: 1.5rem;
+    }
+  }
+</style>
