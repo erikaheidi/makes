@@ -1,0 +1,86 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import GuideCard from "../../../components/GuideCard.astro";
+
+const guides = await getCollection("printingGuides");
+---
+
+<BaseLayout title="Printing Guides">
+  <section class="hero">
+    <a href="/guides/" class="back-link">← All Guides</a>
+    <h1>🖨️ Printing Guides</h1>
+    <p>Settings, tips, and workflows for reliable 3D prints</p>
+  </section>
+
+  <section class="guides-grid">
+    {guides.map((guide) => (
+      <GuideCard
+        title={guide.data.title}
+        description={guide.data.description}
+        href={`/guides/printing/${guide.id}/`}
+      />
+    ))}
+  </section>
+
+  {guides.length === 0 && (
+    <p class="empty-state">No printing guides yet. Check back soon!</p>
+  )}
+</BaseLayout>
+
+<style>
+  .hero {
+    text-align: center;
+    padding: 2rem 0 3rem;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    color: var(--accent);
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+
+  .back-link:hover {
+    text-decoration: underline;
+  }
+
+  .hero h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--purple-500), var(--purple-700));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+  }
+
+  .guides-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .empty-state {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    padding: 4rem 0;
+  }
+
+  @media (max-width: 640px) {
+    .guides-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hero h1 {
+      font-size: 1.75rem;
+    }
+  }
+</style>

@@ -1,0 +1,48 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  href: string;
+}
+
+const { title, description, href } = Astro.props;
+---
+
+<a href={href} class="guide-card">
+  <h3 class="guide-card-title">{title}</h3>
+  {description && <p class="guide-card-description">{description}</p>}
+</a>
+
+<style>
+  .guide-card {
+    display: block;
+    padding: 1.25rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--card-shadow);
+    text-decoration: none;
+    color: var(--text);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .guide-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--card-shadow-hover);
+    text-decoration: none;
+  }
+
+  .guide-card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .guide-card-description {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0;
+  }
+</style>
