@@ -28,6 +28,7 @@
 ## Content guidelines
 - New models should be added as markdown files in `src/content/models`.
 - Frontmatter should match the schema in `src/content.config.ts`.
+- Model frontmatter supports optional `gallery`, `downloadUrl`, `paintingAdvice`, and `printAdvice` in addition to existing optional fields.
 - Keep descriptions concise and useful.
 - Use consistent tag casing.
 
