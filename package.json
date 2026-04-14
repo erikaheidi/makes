@@ -20,7 +20,6 @@
   },
   "homepage": "https://github.com/erikaheidi/makes#readme",
   "dependencies": {
-    "@astrojs/netlify": "^7.0.6",
     "astro": "^6.1.6"
   }
 }
