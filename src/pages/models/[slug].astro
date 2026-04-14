@@ -1,0 +1,204 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const models = await getCollection("models");
+  return models.map((model) => ({
+    params: { slug: model.id },
+    props: { model },
+  }));
+}
+
+const { model } = Astro.props;
+const { Content } = await render(model);
+---
+
+<BaseLayout title={model.data.title}>
+  <article class="model-detail">
+    <a href="/" class="back-link">← Back to Catalog</a>
+
+    {model.data.image && (
+      <div class="model-image">
+        <img src={model.data.image} alt={model.data.title} />
+      </div>
+    )}
+
+    <h1>{model.data.title}</h1>
+
+    <div class="model-meta">
+      {model.data.material && (
+        <div class="meta-item">
+          <span class="meta-label">Material</span>
+          <span class="meta-value">{model.data.material}</span>
+        </div>
+      )}
+      {model.data.printTime && (
+        <div class="meta-item">
+          <span class="meta-label">Print Time</span>
+          <span class="meta-value">{model.data.printTime}</span>
+        </div>
+      )}
+      {model.data.date && (
+        <div class="meta-item">
+          <span class="meta-label">Added</span>
+          <span class="meta-value">
+            {model.data.date.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </span>
+        </div>
+      )}
+    </div>
+
+    {model.data.tags && model.data.tags.length > 0 && (
+      <div class="model-tags">
+        {model.data.tags.map((tag: string) => (
+          <span class="tag">{tag}</span>
+        ))}
+      </div>
+    )}
+
+    <div class="model-content">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .model-detail {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: var(--accent);
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+
+  .back-link:hover {
+    text-decoration: underline;
+  }
+
+  .model-image {
+    margin-bottom: 2rem;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .model-image img {
+    width: 100%;
+    display: block;
+    border-radius: 0;
+  }
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+
+  .model-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding: 1rem 1.25rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .meta-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent-text);
+  }
+
+  .meta-value {
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+
+  .model-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tag {
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+  }
+
+  .model-content {
+    line-height: 1.75;
+    font-size: 1.05rem;
+    color: var(--text);
+  }
+
+  .model-content :global(h2) {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 2rem 0 0.75rem;
+    color: var(--text);
+  }
+
+  .model-content :global(h3) {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 1.5rem 0 0.5rem;
+    color: var(--text);
+  }
+
+  .model-content :global(p) {
+    margin-bottom: 1rem;
+  }
+
+  .model-content :global(ul),
+  .model-content :global(ol) {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+  }
+
+  .model-content :global(li) {
+    margin-bottom: 0.35rem;
+  }
+
+  .model-content :global(a) {
+    color: var(--accent);
+  }
+
+  .model-content :global(code) {
+    background: var(--bg-secondary);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+
+  @media (max-width: 640px) {
+    h1 {
+      font-size: 1.5rem;
+    }
+  }
+</style>

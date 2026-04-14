@@ -1,0 +1,26 @@
+{
+  "name": "makes",
+  "version": "1.0.0",
+  "description": "3d models catalog",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erikaheidi/makes.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/erikaheidi/makes/issues"
+  },
+  "homepage": "https://github.com/erikaheidi/makes#readme",
+  "dependencies": {
+    "@astrojs/netlify": "^7.0.6",
+    "astro": "^6.1.6"
+  }
+}

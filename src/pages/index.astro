@@ -1,0 +1,77 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ModelCard from "../components/ModelCard.astro";
+
+const models = (await getCollection("models")).sort(
+  (a, b) => (b.data.date?.getTime() ?? 0) - (a.data.date?.getTime() ?? 0)
+);
+---
+
+<BaseLayout title="Catalog">
+  <section class="hero">
+    <h1>3D Model Catalog</h1>
+    <p>Browse the collection of 3D printable models</p>
+  </section>
+
+  <section class="catalog-grid">
+    {models.map((model) => (
+      <ModelCard
+        title={model.data.title}
+        description={model.data.description}
+        image={model.data.image}
+        tags={model.data.tags}
+        slug={model.id}
+      />
+    ))}
+  </section>
+
+  {models.length === 0 && (
+    <p class="empty-state">No models yet. Check back soon!</p>
+  )}
+</BaseLayout>
+
+<style>
+  .hero {
+    text-align: center;
+    padding: 2rem 0 3rem;
+  }
+
+  .hero h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--purple-500), var(--purple-700));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+  }
+
+  .catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .empty-state {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    padding: 4rem 0;
+  }
+
+  @media (max-width: 640px) {
+    .catalog-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hero h1 {
+      font-size: 1.75rem;
+    }
+  }
+</style>
