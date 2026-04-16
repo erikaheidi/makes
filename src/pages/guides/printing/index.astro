@@ -3,7 +3,9 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import GuideCard from "../../../components/GuideCard.astro";
 
-const guides = await getCollection("printingGuides");
+const guides = (await getCollection("printingGuides")).sort(
+  (a, b) => (a.data.order ?? Infinity) - (b.data.order ?? Infinity),
+);
 ---
 
 <BaseLayout title="Printing Guides">
@@ -18,6 +20,7 @@ const guides = await getCollection("printingGuides");
       <GuideCard
         title={guide.data.title}
         description={guide.data.description}
+        image={guide.data.image}
         href={`/guides/printing/${guide.id}/`}
       />
     ))}

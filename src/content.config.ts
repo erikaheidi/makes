@@ -43,6 +43,8 @@ const paintingAdvice = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),
+    image: z.string().optional(),
+    order: z.number().optional(),
   }),
 });
 
@@ -51,6 +53,8 @@ const printingGuides = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),
+    image: z.string().optional(),
+    order: z.number().optional(),
   }),
 });
 

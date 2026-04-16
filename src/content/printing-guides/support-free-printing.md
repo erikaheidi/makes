@@ -1,6 +1,7 @@
 ---
 title: "Support-Free Printing"
 description: "Tips for getting clean results from models designed to print without supports."
+order: 2
 ---
 
 1. Confirm the model was designed support-free before slicing — check the listing notes or 3MF settings.

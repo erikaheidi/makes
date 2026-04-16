@@ -1,6 +1,7 @@
 ---
 title: "FDM PLA Basics"
 description: "General-purpose settings for reliable FDM prints with PLA filament."
+order: 1
 ---
 
 1. Use a layer height of 0.15–0.20 mm for a good balance between speed and detail.
